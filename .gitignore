@@ -18,10 +18,7 @@ env/
 # Data policy
 # Ignore all unpacked/raw files in data/, but keep an archive file if present.
 data/*
-!data/*.zip
-!data/*.tar
-!data/*.tar.gz
-!data/*.7z
+!data/*.txt
 
 
 # Intermediate archived materials are not part of final submission.
@@ -32,5 +29,5 @@ archive/
 *.tmp
 
 # Large generated/cache data
-cache/
-*.parquet
+cache/*
+!cache/*.txt
