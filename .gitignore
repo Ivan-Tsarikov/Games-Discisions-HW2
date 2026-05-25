@@ -1,0 +1,36 @@
+# macOS / editor files
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+.venv_hw_2/
+
+# Data policy
+# Ignore all unpacked/raw files in data/, but keep an archive file if present.
+data/*
+!data/*.zip
+!data/*.tar
+!data/*.tar.gz
+!data/*.7z
+
+
+# Intermediate archived materials are not part of final submission.
+archive/
+
+# Temporary command/output artifacts
+*.log
+*.tmp
+
+# Large generated/cache data
+cache/
+*.parquet
