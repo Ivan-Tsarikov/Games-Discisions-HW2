@@ -5,10 +5,9 @@ Homework Assignment #2
 Topic: Game theory  
 Data source: Bureau of Transportation Statistics [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FHK&QO_fu146_anzr=b4vtv0%20n0q%20Qr56v0n6v10%20f748rB)  
 Analysis notebook: [`HW_2/notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb)
-
 Authors: Tsarikov Ivan, Raimova Alina
 
-Repository: https://github.com/Ivan-Tsarikov/Games-Discisions-HW2/tree/main
+[GitHub Repository](https://github.com/Ivan-Tsarikov/Games-Discisions-HW2/tree/main)
 
 ---
 
