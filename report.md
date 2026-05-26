@@ -4,7 +4,7 @@ Course: Games and Decisions in Data Analysis and Modelling
 Homework Assignment #2  
 Topic: Game theory  
 Data source: Bureau of Transportation Statistics [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FHK&QO_fu146_anzr=b4vtv0%20n0q%20Qr56v0n6v10%20f748rB)  
-Analysis notebook: [`HW_2/notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb)
+Analysis notebook: [`02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb)
 Authors: Tsarikov Ivan, Raimova Alina
 
 [GitHub Repository](https://github.com/Ivan-Tsarikov/Games-Discisions-HW2/tree/main)
@@ -25,7 +25,7 @@ This choice is motivated by the exploratory analysis: for many routes, airlines 
 
 ## 2. Data Description
 
-We use the [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FHK&QO_fu146_anzr=b4vtv0%20n0q%20Qr56v0n6v10%20f748rB) from the Bureau of Transportation Statistics. The raw files are stored in [`HW_2/data/`](data/) as quarterly `T_DB1B_MARKET-*.csv` files (the archive can be sent upon request as it is too large for GitHub). They contain market-level observations with the following key fields:
+We use the [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FHK&QO_fu146_anzr=b4vtv0%20n0q%20Qr56v0n6v10%20f748rB) from the Bureau of Transportation Statistics. The raw files are stored in [`data/`](data/) as quarterly `T_DB1B_MARKET-*.csv` files (the archive can be sent upon request as it is too large for GitHub). They contain market-level observations with the following key fields:
 
 - year and quarter;
 - origin and destination airports;
@@ -33,7 +33,7 @@ We use the [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx
 - passengers;
 - market fare.
 
-The raw CSV files were first combined into an analysis-ready parquet dataset in [`HW_2/cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet). The dataset-preparation notebook is [`HW_2/notebooks/01_db1b_market_eda.ipynb`](notebooks/01_db1b_market_eda.ipynb), and the final predictive-game analysis is implemented in [`HW_2/notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb).
+The raw CSV files were first combined into an analysis-ready parquet dataset in [`cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet). The dataset-preparation notebook is [`notebooks/01_db1b_market_eda.ipynb`](notebooks/01_db1b_market_eda.ipynb), and the final predictive-game analysis is implemented in [`notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb).
 
 The combined dataset covers:
 
