@@ -48,9 +48,9 @@ The combined dataset covers:
 
 A fare filter is applied before constructing the game:
 
-$$
+```math
 20 \leq \text{MARKET\_FARE} \leq 1000.
-$$
+```
 
 This removes very low and extremely high fare records that are likely to be reporting artifacts or special cases. The exploratory analysis showed that the raw data contain fares equal to zero, very small fares below 20, and extreme fares above 1000. Since payoffs are revenue-based, these outliers could distort the estimated game.
 
@@ -83,9 +83,9 @@ The real airline market is dynamic and repeated, but the normal-form representat
 
 The model pools observations across major routes. On each selected route, two player roles are defined using only the training period:
 
-$$
-N = \{Leader, Challenger\}.
-$$
+```math
+N = \{\text{Leader}, \text{Challenger}\}.
+```
 
 - `Leader` is the carrier with the largest passenger volume on the route in the training period.
 - `Challenger` is the carrier with the second-largest passenger volume on the route in the training period.
@@ -117,31 +117,31 @@ The first selected routes include JFK-LAX, EWR-MCO, MCO-SJU, MCO-PHL, LAX-SFO, L
 
 Each player has two pure strategies:
 
-$$
-S_{Leader} = S_{Challenger} = \{Decrease, Increase\}.
-$$
+```math
+S_{\text{Leader}} = S_{\text{Challenger}} = \{\text{Decrease}, \text{Increase}\}.
+```
 
 Let
 
-$$
+```math
 \bar p_{i,r,t}
-$$
+```
 
 be the passenger-weighted average fare of player $i$ on route $r$ in quarter $t$. The percentage price change is
 
-$$
+```math
 \Delta p_{i,r,t} = \frac{\bar p_{i,r,t}}{\bar p_{i,r,t-1}} - 1.
-$$
+```
 
 The observed strategy is defined as
 
-$$
+```math
 s_{i,r,t} =
 \begin{cases}
-Increase, & \Delta p_{i,r,t} > 0, \\
-Decrease, & \Delta p_{i,r,t} \leq 0.
+\text{Increase}, & \Delta p_{i,r,t} > 0, \\
+\text{Decrease}, & \Delta p_{i,r,t} \leq 0.
 \end{cases}
-$$
+```
 
 The first quarter for each route-carrier is used only as a lag and is not a game observation.
 
@@ -149,21 +149,21 @@ The first quarter for each route-carrier is used only as a lag and is not a game
 
 The raw revenue proxy is
 
-$$
-Revenue_{i,r,t} = \sum_k Passengers_{i,r,t,k} \cdot Fare_{i,r,t,k}.
-$$
+```math
+\text{Revenue}_{i,r,t} = \sum_k \text{Passengers}_{i,r,t,k} \cdot \text{Fare}_{i,r,t,k}.
+```
 
 Since routes have different sizes, absolute revenue is not comparable across routes. Therefore, payoffs are normalized by each route-carrier's average training revenue:
 
-$$
-u_{i,r,t} = \frac{Revenue_{i,r,t}}{\overline{Revenue}_{i,r,train}}.
-$$
+```math
+u_{i,r,t} = \frac{\text{Revenue}_{i,r,t}}{\overline{\text{Revenue}}_{i,r,\text{train}}}.
+```
 
 Here,
 
-$$
-\overline{Revenue}_{i,r,train}
-$$
+```math
+\overline{\text{Revenue}}_{i,r,\text{train}}
+```
 
 is the average revenue of carrier $i$ on route $r$ during the training period.
 
@@ -174,9 +174,9 @@ Interpretation:
 
 The payoff for each strategy profile is the average normalized revenue over all training observations with that profile:
 
-$$
+```math
 u_i(s_i,s_j) = \frac{1}{|T(s_i,s_j)|}\sum_{(r,t) \in T(s_i,s_j)} u_{i,r,t}.
-$$
+```
 
 ---
 
@@ -212,9 +212,9 @@ The estimated payoff matrix from the training period is:
 
 Each cell contains:
 
-$$
-(Leader\ payoff, Challenger\ payoff),\ n,
-$$
+```math
+(\text{Leader payoff}, \text{Challenger payoff}),\ n,
+```
 
 where $n$ is the number of training observations in that cell.
 
@@ -224,11 +224,11 @@ The minimum cell count is 39, so the pooled model avoids the sparse-cell problem
 
 ## 7. Solving the Game
 
-A pure-strategy Nash equilibrium is a strategy profile $s^*=(s_i^*,s_j^*)$ such that no player can improve its payoff by unilaterally deviating:
+A pure-strategy Nash equilibrium is a strategy profile ${s^\*=(s_i\^\*,s_j^*)}$ such that no player can improve its payoff by unilaterally deviating:
 
-$$
-u_i(s_i^*,s_j^*) \geq \nu_i(s_i',s_j^*) \quad \forall s_i' \in S_i.
-$$
+```math
+u_i(s_i^*,s_j^*) \geq u_i(s_i',s_j^*) \quad \forall s_i' \in S_i.
+```
 
 ### 7.1 Best Responses
 
@@ -250,15 +250,15 @@ For the Challenger:
 
 The pure Nash equilibria are:
 
-$$
-(Decrease, Increase)
-$$
+```math
+(\text{Decrease}, \text{Increase})
+```
 
 and
 
-$$
-(Increase, Decrease).
-$$
+```math
+(\text{Increase}, \text{Decrease}).
+```
 
 Thus, the static stage game predicts **asymmetric price changes**: one player increases while the other decreases.
 
@@ -270,15 +270,15 @@ The Nash equilibria estimated on 2021–2023 data are used as theoretical predic
 
 The predicted Nash-equilibrium profiles are:
 
-$$
-Decrease-Increase
-$$
+```math
+\text{Decrease--Increase}
+```
 
 and
 
-$$
-Increase-Decrease.
-$$
+```math
+\text{Increase--Decrease}.
+```
 
 The 2024 test comparison is:
 
@@ -304,27 +304,27 @@ Only 22.5% of 2024 observations match the Nash-equilibrium profiles. Therefore, 
 
 The main empirical result is that observed price movements are mostly synchronized i.e. the diagonal profiles:
 
-$$
-Decrease-Decrease
-$$
+```math
+\text{Decrease--Decrease}
+```
 
 and
 
-$$
-Increase-Increase.
-$$
+```math
+\text{Increase--Increase}.
+```
 
 Therefore, Nesh equilibrium belongs to asymmetric profiles:
 
-$$
-Decrease-Increase
-$$
+```math
+\text{Decrease--Increase}
+```
 
 and
 
-$$
-Increase-Decrease.
-$$
+```math
+\text{Increase--Decrease}.
+```
 
 The synchronized shares are:
 
@@ -416,15 +416,15 @@ We've constructed an empirical normal-form game of airline price changes using B
 
 The estimated game predicts two pure Nash equilibria:
 
-$$
-(Decrease, Increase)
-$$
+```math
+(\text{Decrease}, \text{Increase})
+```
 
 and
 
-$$
-(Increase, Decrease).
-$$
+```math
+(\text{Increase}, \text{Decrease}).
+```
 
 However, only 22.5% of 2024 observations match these predicted equilibrium profiles. Most observed behaviour is synchronized: both carriers increase or both decrease prices. The synchronized share is 80.55% in training data and 77.50% in test data.
 
