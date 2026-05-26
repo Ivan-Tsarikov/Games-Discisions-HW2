@@ -55,78 +55,104 @@ The prepared parquet cache is stored in [`cache/db1b_market_combined.parquet`](c
 
 ## Notebooks
 
+The project is organized as a two-notebook pipeline. Run the notebooks in the order below.
+
 ### 1. Dataset preparation
 
 [`notebooks/01_db1b_market_eda.ipynb`](notebooks/01_db1b_market_eda.ipynb)
 
-This notebook is intentionally focused on dataset preparation only. It:
+This notebook prepares the DB1B Market dataset for modelling. It:
 
-1. checks that all 16 raw DB1B Market CSV files are present;
-2. reads and standardizes the raw data;
-3. creates route identifiers;
-4. creates the revenue proxy `ticket_revenue_proxy = passengers × market_fare`;
-5. writes the combined parquet cache to [`cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet);
-6. prints a compact validation table.
+1. checks that all quarterly raw CSV files for 2021Q1–2024Q4 are available in [`data/`](data/);
+2. reads the raw DB1B Market files with DuckDB;
+3. standardizes the selected columns used in the analysis;
+4. creates airport-pair and city-market route identifiers;
+5. computes the revenue proxy `ticket_revenue_proxy = passengers * market_fare`;
+6. writes the generated parquet cache to [`cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet);
+7. prints compact validation statistics for the prepared dataset.
+
+The generated parquet file is intentionally not stored in GitHub because it is too large. If the cache is missing, rebuild it by running this notebook after placing the raw CSV files in [`data/`](data/).
 
 ### 2. Predictive price-change game
 
 [`notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb)
 
-This notebook contains the final model. It:
+This notebook contains the final game-theoretic analysis. It:
 
 1. reads [`cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet);
-2. applies the modelling fare filter `20 <= MARKET_FARE <= 1000`;
-3. selects 50 major airport-pair routes;
-4. defines `Leader` and `Challenger` roles;
-5. constructs `Increase` / `Decrease` price-change strategies;
-6. estimates a normal-form payoff matrix on 2021–2023 data;
-7. solves for Nash equilibria;
-8. compares the theoretical prediction with 2024 observed behaviour.
+2. applies the modelling fare filter `20 <= market_fare <= 1000`;
+3. selects 50 major airport-pair routes using only the training period;
+4. defines the two player roles: `Leader` and `Challenger`;
+5. constructs binary price-change strategies: `Increase` and `Decrease`;
+6. normalizes revenue-based payoffs by route-carrier training averages;
+7. estimates the normal-form payoff matrix on 2021Q2–2023Q4 observations;
+8. solves for pure-strategy Nash equilibria;
+9. compares the theoretical prediction with 2024Q1–2024Q4 out-of-sample behaviour.
+
+## Requirements
+
+Python 3.10+ is recommended. The required Python packages are listed in [`requirements.txt`](requirements.txt):
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+The main dependencies are:
+
+- `duckdb` for reading and processing large CSV/parquet files;
+- `pandas`, `numpy`, and `pyarrow` for data manipulation and parquet I/O;
+- `matplotlib` and `seaborn` for plots;
+- `nbconvert`, `nbformat`, and `ipykernel` for notebook execution.
 
 ## Reproducibility
 
-The local virtual environment is [`./.venv_hw_2`](.venv_hw_2/). It is ignored by git. If dependencies need to be installed again, use:
+Recommended setup from this directory:
 
 ```bash
-HW_2/.venv_hw_2/bin/python -m pip install pandas numpy matplotlib seaborn duckdb pyarrow nbformat nbconvert ipykernel
-```
-
-From the repository root, execute notebooks with:
-
-```bash
-HW_2/.venv_hw_2/bin/python -m nbconvert --to notebook --execute HW_2/notebooks/01_db1b_market_eda.ipynb --output 01_db1b_market_eda.ipynb --output-dir HW_2/notebooks --ExecutePreprocessor.timeout=3600
-
-HW_2/.venv_hw_2/bin/python -m nbconvert --to notebook --execute HW_2/notebooks/02_price_change_predictive_game.ipynb --output 02_price_change_predictive_game.ipynb --output-dir HW_2/notebooks --ExecutePreprocessor.timeout=1800
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
 Recommended execution order:
 
-1. run [`notebooks/01_db1b_market_eda.ipynb`](notebooks/01_db1b_market_eda.ipynb) if [`cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet) is missing or needs to be rebuilt;
-2. run [`notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb);
-3. read [`report.md`](report.md) or [`report.pdf`](report.pdf).
+1. place the raw DB1B Market CSV files in [`data/`](data/);
+2. run [`notebooks/01_db1b_market_eda.ipynb`](notebooks/01_db1b_market_eda.ipynb) to create [`cache/db1b_market_combined.parquet`](cache/db1b_market_combined.parquet);
+3. run [`notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb) to reproduce the final model and results;
+4. read the final report in [`report.md`](report.md) or [`report.pdf`](report.pdf).
+
+The notebooks can be executed from the command line as follows:
+
+```bash
+python -m nbconvert --to notebook --execute notebooks/01_db1b_market_eda.ipynb --output 01_db1b_market_eda.ipynb --output-dir notebooks --ExecutePreprocessor.timeout=3600
+
+python -m nbconvert --to notebook --execute notebooks/02_price_change_predictive_game.ipynb --output 02_price_change_predictive_game.ipynb --output-dir notebooks --ExecutePreprocessor.timeout=1800
+```
 
 ## Main result
 
-The predictive game uses:
+The final predictive game uses:
 
 - 50 major airport-pair routes;
-- `Leader` and `Challenger` player roles;
+- two player roles: `Leader` and `Challenger`;
+- strategies: `Increase` and `Decrease`;
 - training period: 2021Q2–2023Q4;
 - test period: 2024Q1–2024Q4;
 - normalized revenue payoffs.
 
-The estimated Nash equilibria predict asymmetric price changes, but the 2024 data are dominated by synchronized price movements. This is the main empirical finding discussed in [`report.md`](report.md).
+The estimated pure-strategy Nash equilibria predict asymmetric price changes: `Decrease-Increase` and `Increase-Decrease`. In the 2024 test data, only 22.5% of observations match these predicted equilibrium profiles. Most observed behaviour is synchronized: both carriers increase or both carriers decrease prices. This is the main empirical finding discussed in [`report.md`](report.md).
 
 ## Git ignore policy
 
 The submitted project keeps:
 
-- raw CSV data in [`data/`](data/);
-- final notebooks in [`notebooks/`](notebooks/);
-- final reports in [`report.md`](report.md) and [`report.pdf`](report.pdf).
+- source notebooks in [`notebooks/`](notebooks/);
+- final reports in [`report.md`](report.md) and [`report.pdf`](report.pdf);
+- lightweight placeholder files in [`data/`](data/) and [`cache/`](cache/) so the directory structure is visible.
 
-The `.gitignore` excludes local environments, Python caches, OS files, Jupyter checkpoints, generated parquet cache files, and archived intermediate materials.
+The repository does not store raw DB1B CSV files or generated parquet caches because they are too large for GitHub. The `.gitignore` excludes local environments, Python caches, OS files, Jupyter checkpoints, generated cache files, raw data files, and archived intermediate materials.
 
-## Archive
+## Data availability
 
-[`archive/`](archive/) contains intermediate notebooks, earlier modelling attempts, old output folders, and the initial implementation plan. It is kept locally for transparency but is ignored by git and is not required for the final submission.
+The raw DB1B Market archive and the generated parquet cache can be provided separately upon request. To reproduce the analysis from scratch, place the raw quarterly CSV files in [`data/`](data/) and run [`notebooks/01_db1b_market_eda.ipynb`](notebooks/01_db1b_market_eda.ipynb).

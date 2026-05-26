@@ -370,7 +370,6 @@ However, the empirical data show that synchronized movements are much more commo
 
 The most plausible interpretation is that airlines face strong common market forces. If demand rises, both carriers may increase prices. If demand falls, both may decrease prices. In addition, because airlines interact repeatedly over time, they may avoid aggressive unilateral deviations that could trigger future price competition.
 
-Therefore, the static game is useful as a benchmark, but the empirical behaviour points toward a richer repeated or dynamic environment.
 
 ---
 
