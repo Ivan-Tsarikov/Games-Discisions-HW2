@@ -3,7 +3,7 @@
 Course: Games and Decisions in Data Analysis and Modelling  
 Homework Assignment #2  
 Topic: Game theory  
-Data source: Bureau of Transportation Statistics DB1B Market data  
+Data source: Bureau of Transportation Statistics [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FHK&QO_fu146_anzr=b4vtv0%20n0q%20Qr56v0n6v10%20f748rB)  
 Analysis notebook: [`HW_2/notebooks/02_price_change_predictive_game.ipynb`](notebooks/02_price_change_predictive_game.ipynb)
 Authors: Tsarikov Ivan, Raimova Alina
 
@@ -11,30 +11,19 @@ Authors: Tsarikov Ivan, Raimova Alina
 
 ## 1. Introduction
 
-This project studies strategic price competition between airlines on major U.S. domestic routes. Airline ticket prices are not chosen independently: if one carrier raises or lowers prices on a route, its competitors may react by changing their own prices in the same or opposite direction. Therefore, airline pricing is a natural real-life example of strategic interaction.
+We chose the problem of strategic price competition between airlines on major U.S. domestic routes. Airline ticket prices are not chosen independently: if one carrier raises or lowers prices on a route, its competitors may react by changing their own prices in the same or opposite direction. Therefore, airline pricing is a natural real-life example of strategic interaction.
 
-The main goal of the project is to construct an empirical normal-form game and compare its theoretical prediction with observed airline behaviour. Instead of modelling whether a carrier sets an absolutely high or low price level, we model whether a carrier **increases** or **decreases** its passenger-weighted average fare relative to the previous quarter.
+We've constructed an empirical normal-form game and compared its theoretical prediction with observed airline behaviour. Also, we modeled whether a carrier **increases** or **decreases** its passenger-weighted average fare relative to the previous quarter.
 
 This choice is motivated by the exploratory analysis: for many routes, airlines tend to move prices in the same direction over time. A price-change game captures this dynamic more directly than a static `Low` / `High` price-level classification.
 
-The research question is:
 
-$$
-\text{Do airlines' observed price changes match the Nash-equilibrium prediction of an empirically estimated pricing game?}
-$$
-
-More specifically, we ask:
-
-1. What payoff matrix is implied by historical price-change behaviour?
-2. What Nash equilibrium or equilibria does this game predict?
-3. How often does observed 2024 behaviour match the equilibrium prediction estimated from 2021–2023 data?
-4. Do airlines more often move prices in opposite directions, as the static game predicts, or in the same direction?
 
 ---
 
 ## 2. Data Description
 
-The analysis uses the DB1B Market data from the Bureau of Transportation Statistics. The raw files are stored in [`HW_2/data/`](data/) as quarterly `T_DB1B_MARKET-*.csv` files. They contain market-level observations with the following key fields:
+We use the [DB1B Market data](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FHK&QO_fu146_anzr=b4vtv0%20n0q%20Qr56v0n6v10%20f748rB) from the Bureau of Transportation Statistics. The raw files are stored in [`HW_2/data/`](data/) as quarterly `T_DB1B_MARKET-*.csv` files (the archive can be sent upon request as it is too large for GitHub). They contain market-level observations with the following key fields:
 
 - year and quarter;
 - origin and destination airports;
@@ -313,7 +302,7 @@ Only 22.5% of 2024 observations match the Nash-equilibrium profiles. Therefore, 
 
 ## 9. Main Empirical Deviation: Synchronized Price Movements
 
-The main empirical result is that observed price movements are mostly synchronized. The diagonal profiles are:
+The main empirical result is that observed price movements are mostly synchronized i.e. the diagonal profiles:
 
 $$
 Decrease-Decrease
@@ -325,7 +314,7 @@ $$
 Increase-Increase.
 $$
 
-The asymmetric profiles are:
+Therefore, Nesh equilibrium belongs to asymmetric profiles:
 
 $$
 Decrease-Increase
@@ -352,9 +341,9 @@ This means that airlines often move prices in the same direction: both increase 
 - fuel and cost shocks;
 - seasonality;
 - capacity constraints;
-- repeated interaction and tacit coordination.
+- or even repeated interaction and tacit coordination. 
 
-Importantly, the data do not prove explicit collusion. The result should be interpreted cautiously as evidence of synchronized pricing patterns, not as direct evidence of illegal coordination.
+All in all, it seems like airline market is rather simple and streight-forward in its pricing behaviour.
 
 ---
 
@@ -409,9 +398,6 @@ The model pools different routes and different airlines using the roles `Leader`
 
 The binary strategy set `Increase` / `Decrease` is simple and interpretable, but real pricing decisions are continuous and multidimensional. Airlines choose many fares across booking classes, days, and passenger types.
 
-### 12.6 No Direct Causal Identification
-
-The model estimates empirical payoffs from observed outcomes. It does not identify causal effects of price changes or fully separate strategic responses from external market forces.
 
 ---
 
@@ -424,9 +410,9 @@ The model estimates empirical payoffs from observed outcomes. It does not identi
 
 ---
 
-## 14. Conclusion
+## 14. Finial Conclusion
 
-This project constructed an empirical normal-form game of airline price changes using BTS DB1B Market data. The game was estimated on 2021–2023 observations from 50 major U.S. domestic routes and tested on 2024 data.
+We've constructed an empirical normal-form game of airline price changes using BTS DB1B Market data. The game was estimated on 2021–2023 observations from 50 major U.S. domestic routes and tested on 2024 data.
 
 The estimated game predicts two pure Nash equilibria:
 
